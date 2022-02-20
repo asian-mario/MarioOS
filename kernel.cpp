@@ -1,10 +1,11 @@
-#include "types.h" //Our header file
-#include "gdt.h" //global descriptor table
+#include "types.h" 
+#include "gdt.h" 
+#include "interrupts.h" 
 
 
 
 //stdlib cpp include replacements
-void print(char* str){
+void printf(char* str){
     static uint16_t* VideoMemory = (uint16_t*)0xb8000;
 
     static uint8_t x = 0, y = 0; 
@@ -13,13 +14,13 @@ void print(char* str){
 
         switch(str[i]){
 
-            case '\n': //new line e.g if we put \n in our code
+            case '\n': 
                 y++;
                 x = 0;
                 break;
 
 
-            default: //normal case that we normall would have
+            default: 
                 VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | str[i];
                 x++;
                 break;
@@ -45,11 +46,14 @@ void print(char* str){
 
 
 extern "C" void kernelMain(void* multiboot_struct, uint32_t){ //magic num int is for the bootloader to recognise this cpp program as a kernel 
-    print("MARIO OS  ----  IN DEVELOPMENT"); //isnt this obvious
-    print("VERSION V.0001 EARLY DEVELOPMENT BUILD");
+    printf("MARIO OS  ----  IN DEVELOPMENT"); 
+    printf("EARLY DEVELOPMENT BUILD");
 
     GlobalDescriptorTable gdt;
+    InterruptManager interrupts(&gdt);
 
-    while(1); //Infinite loop because there is literally nothing else for now
+    interrupts.Activate();
+
+    while(1); 
 }
 

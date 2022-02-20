@@ -1,4 +1,4 @@
-GCCARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore 
+GCCARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -fpermissive
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
@@ -37,6 +37,6 @@ mario.iso: kernel.bin
 .PHONY: clean
 clean:
 		rm -f $(objects) kernel.bin  
-		# Basically, just deletes the object (.o) files we generated and deletes the .bin file too
+		# sweep sweep
 
 	
