@@ -44,9 +44,18 @@ void printf(char* str){
     }
 }
 
+typedef void(*constructor)();
+extern "C" constructor start_ctors;
+extern "C" constructor end_ctors;
+extern "C" void callConstructors(){
+    for(constructor* i = &start_ctors; i != end_ctors; i++){
+        (*i)();
+    }
+}
+
 
 extern "C" void kernelMain(void* multiboot_struct, uint32_t){ //magic num int is for the bootloader to recognise this cpp program as a kernel 
-    printf("MARIO OS  ----  IN DEVELOPMENT"); 
+    printf("MARIO OS  ----  IN DEVELOPMENT \n"); 
     printf("EARLY DEVELOPMENT BUILD");
 
     GlobalDescriptorTable gdt;
