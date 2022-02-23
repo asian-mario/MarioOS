@@ -11,11 +11,13 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
     uint8_t DescriptorPrivelageLevel,
     uint8_t descType
 ){
-    const uint8_t IDT_DESC_PRESENT = 0x80;
 
     InterruptDescriptorTable[interruptNum].handlerAddressLowBits = ((uint32_t)handler) & 0xFFFF;
     InterruptDescriptorTable[interruptNum].handlerAddressHighBits = (((uint32_t)handler) >> 16) & 0xFFFF;
     InterruptDescriptorTable[interruptNum].gdt_codeSegmentSelector =  codeSegmentSelectorOffset;
+
+    const uint8_t IDT_DESC_PRESENT = 0x80;
+
     InterruptDescriptorTable[interruptNum].reserved = 0; 
     InterruptDescriptorTable[interruptNum].access = IDT_DESC_PRESENT | descType | ((DescriptorPrivelageLevel&3) << 5);
 
@@ -28,6 +30,9 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) : picMasterComman
     for(uint16_t i = 0; i < 256; i++){
         SetInterruptDescriptorTableEntry(i, CodeSegment, &IgnoreInterruptRequest, 0, IDT_INTERRUPT_GATE);
     }
+
+    SetInterruptDescriptorTableEntry(0, CodeSegment, &IgnoreInterruptRequest, 0, IDT_INTERRUPT_GATE);
+
 
     //shifted by IRQ_BASE
     SetInterruptDescriptorTableEntry(0x20, CodeSegment, &HandleInterruptRequest0x00, 0, IDT_INTERRUPT_GATE);

@@ -54,7 +54,7 @@ extern "C" void callConstructors(){
 }
 
 
-extern "C" void kernelMain(void* multiboot_struct, uint32_t){ //magic num int is for the bootloader to recognise this cpp program as a kernel 
+extern "C" void kernelMain(const void* multiboot_struct, uint32_t){ //magic num int is for the bootloader to recognise this cpp program as a kernel 
     printf("MARIO OS  ----  IN DEVELOPMENT \n"); 
     printf("EARLY DEVELOPMENT BUILD");
 
