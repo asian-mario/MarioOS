@@ -1,44 +1,39 @@
-#ifndef __GDT_h
-#define __GDT_h
+#pragma once
 
 #include "types.h"
 
-    class GlobalDescriptorTable{
+class GlobalDescriptorTable
+{
+    public:
 
+        class SegmentDescriptor
+        {
+            private:
+                uint16_t limit_lo;
+                uint16_t base_lo; //pointer
+                uint8_t base_hi; //pointer extension
+                uint8_t type; //excess
+                uint8_t limit_hi; //flaglimit
+                uint8_t base_vhi;
 
-        public:
-            class SegmentDescriptor{
-                private:
-                    uint16_t limit_lo; 
-                    uint16_t base_lo; //pointer
-                    uint8_t base_hi; //pointerextension
-                    uint8_t type; //excess
-                    uint8_t flags_limit_hi; //flaglimit
-                    uint8_t base_vhi;
-                
-                public:
-                    SegmentDescriptor(uint32_t base, uint32_t limit, uint8_t type);
-                    uint32_t Base();
-                    uint32_t Limit();
+            public:
+                SegmentDescriptor(uint32_t base, uint32_t limit, uint8_t type);
+                uint32_t Base();
+                uint32_t Limit();
+        } __attribute__((packed));
 
-            } __attribute__((packed));
+    private:
+        SegmentDescriptor nullSegmentSelector;
+        SegmentDescriptor unusedSegmentSelector;
+        SegmentDescriptor codeSegmentSelector;
+        SegmentDescriptor dataSegmentSelector;
 
-            //MEMORY SEGMENTS, the code and data segement being spread out is a risk for OS security but honestly. who is going to use this operating system except for me lmao
+    public:
 
-            SegmentDescriptor nullSegmentSelector;
-            SegmentDescriptor unusedSegmentSelector;           
-            SegmentDescriptor codeSegmentSelector; 
-            SegmentDescriptor dataSegmentSelector;
+        GlobalDescriptorTable();
+        ~GlobalDescriptorTable();
 
-        public:
-            GlobalDescriptorTable();
-            ~GlobalDescriptorTable();
+        uint16_t CodeSegmentSelector();
+        uint16_t DataSegmentSelector();
+};
 
-            uint16_t CodeSegmentSelector();
-            uint16_t DataSegmentSelector();
-
-    };
-
-
-
-#endif
