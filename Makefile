@@ -34,5 +34,5 @@ install: mario.bin
 
 .PHONY: clean
 clean:
-	rm -f $(objects) mario.bin mario.iso
+	rm -f $(objects) mario.bin 
 	# sweep sweep
